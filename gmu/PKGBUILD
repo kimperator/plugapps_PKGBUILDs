@@ -1,0 +1,19 @@
+# Maintainer: Kai Uwe Jesussek <kajot@gmx.net>
+
+pkgname=gmu
+pkgver=0.7.2
+pkgrel=1
+pkgdesc="A very nice Music Player, based on SDL"
+arch=('i686' 'x86_64' 'arm')
+url="http://wejp.k.vu"
+license=('GPL2')
+depends=('sdl' 'sdl_image' 'sdl_gfx' 'libvorbisdec-svn' 'flac' 'mpg123' 'libmikmod' 'speex')
+source=(http://wejp.k.vu/files/gmu-0.7.2.tar.gz)
+md5sums=('dea481ab0f8f9f10b38aa21605dbb18d')
+
+build() {
+	cd ${srcdir}/${pkgname}-${pkgver}
+	make || return 1
+	make DESTDIR=${pkgdir} install
+}
+

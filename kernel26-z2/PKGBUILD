@@ -1,0 +1,30 @@
+# Maintainer:  Kai Uwe Jesussek <kajot@gmx.net>
+
+plugrel=1
+pkgname=kernel26-z2
+_pkgname=kernel26-z2
+pkgver=2.6.37+
+pkgrel=1
+pkgdesc="Z2 Kernel"
+arch=('arm')
+url="http://kernel.org/"
+license=('gpl and Marvell International Ltd Commercial')
+provides=("kernel26")
+conflicts=('kernel26')
+
+source=("uboot.script" "z2sid-2.6.37+_02142011.tar.bz2" "libertas.tar.xz")
+sha256sums=('de60d4b64e06d48c5408fb349eabff244be96b68e15b9f562a41ed195ebf9a0f'
+            'c69c032e9c4988f8ff8478ee500a9b347b1b89ea62f96213770a2b46b637443c'
+            '57c5414ab7d8fd3dca9340577bd3683c7535711b5882b11aafb8655924c298de')
+
+build() {
+	true
+}
+
+package() {
+	cp -rp "$srcdir/boot" "$pkgdir"
+	cp -rp "$srcdir/lib" "$pkgdir"
+	#mkdir "$pkgdir/lib/firmware"
+	cp -rp "$srcdir/libertas" "$pkgdir/lib/firmware"
+	cp -rpL "$srcdir/uboot.script" "$pkgdir/boot"
+}

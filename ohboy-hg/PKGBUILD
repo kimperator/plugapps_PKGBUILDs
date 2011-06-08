@@ -1,0 +1,45 @@
+# Contributor: kajot@gmx.net
+pkgname=ohboy-hg
+pkgver=49  #ohboy version
+pkgrel=163 #gnuboy version
+pkgdesc="A Gnuboy SDL Frontend"
+arch=('arm' 'x86_64' 'i686')
+url="http://code.google.com/p/ohboy/"
+license=('GPL2')
+depends=('sdl' 'sdl_image' 'zlib')
+makedepends=('autoconf' 'automake' 'mercurial' 'subversion')
+provides=('ohboy=2.0')
+source=()
+md5sums=()
+
+_hgroot="https://ohboy.googlecode.com/hg/"
+_hgrepo="ohboy"
+
+build() {
+  cd $srcdir
+
+  msg "Connecting to $_hgroot"
+  if [ -d $_hgrepo ]; then
+    cd $_hgrepo
+    hg pull -u || return 1
+    msg2 "Finished updating the local repository!"
+  else
+    hg clone $_hgroot $_hgrepo || return 1
+    msg2 "Initial pull complete!"
+  fi
+
+  rm -rf ${srcdir}/${_hgrepo}-build
+  cp -a ${srcdir}/${_hgrepo} ${srcdir}/${_hgrepo}-build || return 1
+  cd ${srcdir}/${_hgrepo}-build
+  svn co http://gnuboy.googlecode.com/svn/trunk gnuboy
+  sed "s/GNUBOY_DISABLE_SDL_SOUND = True//" -i Makefile.linux_sdl
+  make -f Makefile.linux_sdl || return 1
+}
+
+package() {
+  cd ${srcdir}/${_hgrepo}-build
+  install -D -m755 ohboy $pkgdir/bin/ohboy
+  install -D -m644 ohboy.rc $pkgdir/etc/ohboy.rc
+}
+
+# End of file
