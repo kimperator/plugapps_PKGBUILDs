@@ -1,7 +1,7 @@
 # Maintainer: Kai Uwe Jesussek <kajot@gmx.net>
 
 pkgname=samen-git
-pkgver=20110601
+pkgver=20110609
 pkgrel=1
 pkgdesc="samen is a ultra small wpa_supplicant (wpa_cli) action handler."
 arch=('arm' 'i686' 'x86_64')
@@ -30,8 +30,9 @@ build() {
   rm -rf ${srcdir}/${_gitname}-build
   cp -r ${srcdir}/${_gitname} ${srcdir}/${_gitname}-build
   cd ${srcdir}/${_gitname}-build
-  mkdir -p ${pkgdir}/usr/sbin/
-  gcc src/samen-handler.c -o ${pkgdir}/usr/sbin/samen-handler
+  mkdir -p ${pkgdir}/usr/sbin/ ${pkgdir}/usr/bin/
+  gcc src/samen-handler/samen-handler.c -o ${pkgdir}/usr/sbin/samen-handler
+  cp -p src/samen-shop/samen-shop ${pkgdir}/usr/bin/samen-shop
   cp -r additions/arch/etc ${pkgdir}
 }
 package() {
